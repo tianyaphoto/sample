@@ -114,14 +114,14 @@ directory.views.CreateForMeView = Backbone.View.extend({
 		$("#pause").button('disable');
 		
 		var recsec = 10;
-		recordAudio();
+		recordAudio("test.mp3");
 		var rectxt = setInterval(function(){
 			var recording = $('#recording');
 			if(recsec == 0) {
 				clearInterval(rectxt);
 				recording.text('Play recording');
 				$("#record").button('enable');
-				playAudio('record.mp3');
+				playAudio();
 			} else {
 				recording.text('Stop recording in ' + recsec + ' seconds' );
 				--recsec;
@@ -201,7 +201,10 @@ function bodyLoad(){
 }
 
 function deviceReady(){
+	 
 	$.mobile.allowCrossDomainPages = true;
 	app = new AppRouter();
 	Backbone.history.start();
+	
+	window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onFileSytemSuccess, function(error){alert(error);}); 
 }

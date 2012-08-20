@@ -3,14 +3,15 @@ var audio = null;
 var audioTimer = null;
 var pausePos = 0;
 
-var src = "sample.mp3";//"recording.wav"; // name of auio file
+//var src = "/android_asset/audio/sample.mp3";;//"recording.wav"; // name of auio file
+var src = "test.mp3";
 var mediaRec; // the object for recording and play sound
 var directory; // holds a reference for directory reading// handling document ready and phonegap deviceready
 
 
 /* play audio file */
 function playAudio(){
-	audio = new Media(directory.fullPath+"/"+src, function(){ // success callback
+	audio = new Media(src, function(){ // success callback
     	console.log("playAudio():Audio Success");
     }, function(error){ // error callback
     	alert('code: '    + error.code    + '\n' + 
@@ -77,7 +78,9 @@ function setAudioPosition(position) {
 
 /* record audio file */
 function recordAudio(file){
-	audioRec = new Media(directory.fullPath+"/"+src, function(){ // success callback
+	//src = directory.fullPath+"/"+file;
+	//src = file;
+	audioRec = new Media(directory.fullPath+"/"+file, function(){
     	console.log("recordAudio():Audio Success");
     }, function(error){ // error callback
     	alert('recording error : ' + error.message);
