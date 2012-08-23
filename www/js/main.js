@@ -1,3 +1,5 @@
+ $(document).ready(function() {
+	 
 var directory = {
 	models : {},
 	views : {},
@@ -36,6 +38,7 @@ directory.views.HomeView = Backbone.View.extend({
 				if (data == 1) {
 					app.index();
 				}
+				app.index();
 			}
 		});
 
@@ -150,6 +153,7 @@ var AppRouter = Backbone.Router.extend({
 			return false;
 		});
 		this.firstPage = true;
+		
 	},
 
 	home : function() {
@@ -182,29 +186,32 @@ var AppRouter = Backbone.Router.extend({
 
 });
 
-// $(document).ready(function() {
-// 	$.mobile.allowCrossDomainPages = true;
-// 	app = new AppRouter();
-// 	Backbone.history.start();
-// });
 
-function bodyLoad(){
-// 	document.addEventListener('backbutton', function(e) {
-// e.preventDefault();
-// }, true);
-// document.addEventListener('touchmove', function(e) {
-// }, false);
-	document.addEventListener('deviceready', deviceReady, false);
-// 	if(/https?:\/\//.test(document.location.href)) {
-// deviceReady();
-// }
+ 	$.mobile.allowCrossDomainPages = true;
+ 	window.app = new AppRouter();
+ 	Backbone.history.start();
+
+
+//function bodyLoad(){
+//// 	document.addEventListener('backbutton', function(e) {
+//// e.preventDefault();
+//// }, true);
+//// document.addEventListener('touchmove', function(e) {
+//// }, false);
+//	document.addEventListener('deviceready', deviceReady, false);
+//// 	if(/https?:\/\//.test(document.location.href)) {
+//// deviceReady();
+//// }
+//}
+//
+//
+//
+
+	    document.addEventListener('deviceready', onDeviceReady, false);
+
+ 
+function onDeviceReady(){
+   window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onFileSytemSuccess, onError);
 }
 
-function deviceReady(){
-	 
-	$.mobile.allowCrossDomainPages = true;
-	app = new AppRouter();
-	Backbone.history.start();
-	
-	window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onFileSytemSuccess, function(error){alert(error);}); 
-}
+ });

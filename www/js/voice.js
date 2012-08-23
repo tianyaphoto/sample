@@ -3,8 +3,8 @@ var audio = null;
 var audioTimer = null;
 var pausePos = 0;
 
-//var src = "/android_asset/audio/sample.mp3";;//"recording.wav"; // name of auio file
-var src = "test.mp3";
+var src = "/android_asset/audio/sample.mp3";;//"recording.wav"; // name of auio file
+//var src = "test.mp3";
 var mediaRec; // the object for recording and play sound
 var directory; // holds a reference for directory reading// handling document ready and phonegap deviceready
 
@@ -81,6 +81,7 @@ function recordAudio(file){
 	//src = directory.fullPath+"/"+file;
 	//src = file;
 	audioRec = new Media(directory.fullPath+"/"+file, function(){
+		src = directory.fullPath+"/"+file;
     	console.log("recordAudio():Audio Success");
     }, function(error){ // error callback
     	alert('recording error : ' + error.message);
@@ -98,17 +99,34 @@ function recordAudio(file){
 
 function onFileSytemSuccess(fileSystem) {
     // Get the data directory, creating it if it doesn't exist.
-    fileSystem.root.getDirectory("",{create:true},onDirectory,onError);
-    // Create the lock file, if and only if it doesn't exist.	
-    fileSystem.root.getFile(src, {create: true, exclusive: false}, onFileEntry, onError);  
+    fileSystem.root.getDirectory("sample",{ create:true },onDirectory,onError);
+    fileSystem.root.getFile("sample.txt", { create: true, exclusive: false }, gotFileEntry, onError);  
 }
 
 function onFileEntry(fileEntry) {
-    console.log("onFileEntry()");
+}
+
+function gotFileEntry(fileEntry) {
+    fileEntry.createWriter(gotFileWriter, fail);
+}
+
+function gotFileWriter(writer) {
+    writer.onwriteend = function(evt) {
+        console.log("contents of file now 'some sample text'");
+        writer.truncate(11);  
+        writer.onwriteend = function(evt) {
+            console.log("contents of file now 'some sample'");
+            writer.seek(4);
+            writer.write(" different text");
+            writer.onwriteend = function(evt){
+                console.log("contents of file now 'some different text'");
+            }
+        };
+    };
+    writer.write("some sample text");
 }
 
 function onDirectory(d) {
-    console.log("onDirectory()");
     directory = d;
     var reader = d.createReader();
     reader.readEntries(onDirectoryRead,onError);
