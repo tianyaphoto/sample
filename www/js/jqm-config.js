@@ -3,6 +3,8 @@ $(document).bind("mobileinit", function () {
     $.mobile.linkBindingEnabled = false;
     $.mobile.hashListeningEnabled = false;
     $.mobile.pushStateEnabled = false;
+    
+    $.mobile.allowCrossDomainPages = true;
 
     // Remove page from DOM when it's being replaced
     $('div[data-role="page"]').live('pagehide', function (event, ui) {

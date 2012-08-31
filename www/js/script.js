@@ -3,6 +3,7 @@
 var src = "recording.wav"; // name of auio file
 var mediaRec; // the object for recording and play sound
 var directory; // holds a reference for directory reading// handling document ready and phonegap deviceready
+var root ;
 
 window.addEventListener('load', function () {
     document.addEventListener('deviceready', onDeviceReady, false);
@@ -172,6 +173,8 @@ function onFileSytemSuccess(fileSystem) {
 
 function onFileEntry(fileEntry) {
     console.log("onFileEntry()");
+    root = fileEntry.fullPath;
+    alert("root is " + root);
 }
 
 function onDirectory(d) {

@@ -32,7 +32,7 @@
 
         </div>
 <a href="#">Forgot Password?</a>
-
+</div>
     </script>
 
 <script type="text/template" id="index">
@@ -51,9 +51,26 @@
 						Create For Me
 					</a>
 				</li>
-                <li><a href="#create_for_other" id="create_for_other_link">
+                <li><a href="#createforother" id="create_for_other_link">
 	<img src="./pics/Amy_Jones.jpg" />
 Create For Other</a></li>
+
+                <li><a href="#received" id="receivedlink">
+	<img src="./pics/Amy_Jones.jpg" />
+Received</a></li>
+
+                <li><a href="#created" id="created_link">
+	<img src="./pics/Amy_Jones.jpg" />
+Created</a></li>
+
+                <li><a href="#updates" id="new_updates_link">
+	<img src="./pics/Amy_Jones.jpg" />
+New Updates</a></li>
+
+                <li><a href="#system" id="system_link">
+	<img src="./pics/Amy_Jones.jpg" />
+System</a></li>
+
             </ul>
         </div>
 
@@ -77,11 +94,11 @@ Create For Other</a></li>
 <div class="ui-grid-b">
 	<div class="ui-block-a">   <label for="name">Record:</label>
 </div>
-	<div class="ui-block-b">	        
- <p>Tony Smeth</p>
-  <p>IBM Inc</p>
-  <p>Boston MA</p>
-  <p>Phone #508-314-0885</p>
+	<div class="ui-block-b">	
+         <p><%=	id %></p>
+ <p><%=	email %></p>
+  <p><%=company %></p>
+  <p>Phone <%=phone %></p>
 </div>
 	<div class="ui-block-c">
 <img src="./pics/Ray_Moore.jpg" />
@@ -113,6 +130,58 @@ Create For Other</a></li>
 
     </script>
 
+
+<script type="text/template" id="create_for_other">
+        <div data-role="header" data-theme="b">
+	<a href="#index" data-icon="back" class="back ui-btn-left">Back</a>
+            <h1>Yeekle</h1>
+			<a href="#" data-icon="delete" class="back ui-btn-right">Logout</a>
+        </div>
+
+        <div data-role="content">
+			<div class="ui-body ui-body-c">
+  
+			<div data-role="fieldcontain">
+	         <label for="name">Speaker:</label>
+	         <input type="text" name="speaker" id="speaker" value="tomzhang0910@hotmail.com" placeholder="Speaker's Email or Phone Number" value=""  />
+			</div>
+
+
+		<div data-role="fieldcontain" id="audioPosition">
+			<input type="range" name="slider" id="slider" value="0" min="0" max="100" data-highlight="true" disabled />
+		</div>
+
+	<div data-role="controlgroup" data-type="horizontal" data-mini="true">
+			<input type="button" id="play" data-inline="true"    data-role="button" data-mini="true"  data-icon="audio-play"  value="Play" disabled />
+
+			<input type="button" id="record" data-inline="true" data-mini="true" data-role="button"  data-mini="true"  data-icon="audio-record"   value="Record" />
+		
+<input type="button" id="submit" data-inline="true" data-role="button" data-mini="true"  data-mini="true"  data-icon="submit" value="Submit" />
+</div>
+		<div id="recording"></div>
+
+</div>
+     </div>
+
+    </script>
+<script type="text/template" id="received">
+<div data-role="header" data-theme="b">
+	<a href="#index" data-icon="back" class="back ui-btn-left">Back</a>
+	<h1>Yeekle</h1>
+	<a href="#" data-icon="delete" class="back ui-btn-right">Logout</a>
+</div>
+<div data-role="content">
+	<div class="content-primary">
+		<ul data-role="listview">
+			<li><a href="index.html"> <img src="./pics/default_header.jpg" />
+					<h3>Broken Bells</h3>
+					<p>Broken Bells</p>
+			</a></li>
+		</ul>
+	</div>
+</div>
+</script>
+
 <script type="text/javascript" src="libs/cordova-2.0.0.js"></script>
 <script type="text/javascript" src="libs/jquery-1.7.1.min.js"></script>
 <script type="text/javascript" src="js/jqm-config.js"></script>
@@ -120,14 +189,12 @@ Create For Other</a></li>
 <script type="text/javascript" src="libs/underscore-min.js"></script>
 <script type="text/javascript" src="libs/backbone-min.js"></script>
 <script type="text/javascript" src="js/md5.js"></script>
+<script type="text/javascript" src="js/utils.js"></script>
 <script type="text/javascript" src="js/voice.js"></script>
 <script type="text/javascript" src="js/main.js"></script>
-
 </head>
 
 <body>
-
-
 
 </body>
 </html>

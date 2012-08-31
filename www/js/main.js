@@ -1,4 +1,5 @@
 var token = null;
+var current_user = null;
 
 $(document).ready(
 		function() {
@@ -9,11 +10,39 @@ $(document).ready(
 				utils : {},
 				dao : {}
 			};
+			
+			directory.models.User = Backbone.Model.extend({
+				defaults: function(){
+					return {
+						id: 0,
+						email: "test@test.com",
+						lastname: "test",
+						firstname: "test",
+						face: "test.jpg",
+						mobile: null,
+					};
+				},
+				
+				initialize: function(){
+					console.log("init user data");
+				},
+				
+				
+			});
+			
+			directory.views.ReceivedView = Backbone.View.extend({
+				
+				template: _.template($("#received").html()),
+				
+				render: function(){
+					$(this.el).html(this.template());
+					return this;
+				}
+			});
 
 			directory.views.HomeView = Backbone.View.extend({
 
 				template : _.template($('#home').html()),
-				// template:_.template(directory.utils.templateLoader.get('login-page')),
 
 				events : {
 					"click #submit-sign-in" : "sign_in"
@@ -36,14 +65,18 @@ $(document).ready(
 							password : md5p
 						}),
 						cache : false,
-						dataType : "html",
+						dataType : "json",
 						success : function(data) {
-							if (data.result == 1) {
-								token = data.token;
-								app.index();
+							console.log("login data:  " + data);
+							if (data.result == 0) {
+								console.log(data.log);
+								showAlert("Invalid Username OR Password.");
+							} else {
+								token  = data.tonken;
+								console.log("user data : " + data.user.id + data.user.email );
+								current_user = new directory.models.User(data.user);
+								app.index(); 
 							}
-							token = data.token;
-							app.index();
 						}
 					});
 
@@ -59,9 +92,9 @@ $(document).ready(
 				events : {
 					"click #create_for_me_link" : "create_for_me"
 				},
-
-				create_for_me : function() {
-					// app.createforme();
+				
+				create_for_me: function(){
+					
 				},
 
 				render : function(eventName) {
@@ -169,9 +202,14 @@ $(document).ready(
 				},
 
 				render : function(eventName) {
-					$(this.el).html(this.template());
+					console.log("current_user" + JSON.stringify(current_user));
+					$(this.el).html(this.template(current_user.toJSON()));
 					return this;
 				}
+			});
+			
+			directory.views.CreateForOtherView = Backbone.View.extend({
+				
 			});
 
 			var AppRouter = Backbone.Router.extend({
@@ -179,7 +217,12 @@ $(document).ready(
 				routes : {
 					"" : "home",
 					"index" : "index",
-					"createforme" : "createforme"
+					"createforme" : "createforme",
+					"createforother": "createforother",
+					"received": "received",
+					"created": "created",
+					"updates": "updates",
+					"system": "system"
 				},
 
 				initialize : function() {
@@ -208,6 +251,22 @@ $(document).ready(
 				createforme : function() {
 					this.changePage(new directory.views.CreateForMeView());
 				},
+				
+				received: function(){
+					this.changePage(new directory.views.ReceivedView());
+				},
+				
+				created: function(){
+					this.changePage(new directory.views.ReceivedView());
+				},
+				
+				updates: function(){
+					this.changePage(new directory.views.ReceivedView());
+				},
+				
+				system: function(){
+					this.changePage(new directory.views.ReceivedView());
+				},
 
 				changePage : function(page) {
 					$(page.el).attr('data-role', 'page');
@@ -231,7 +290,7 @@ $(document).ready(
 						onFileSytemSuccess, onError);
 			}
 
-			$.mobile.allowCrossDomainPages = true;
+			
 			window.app = new AppRouter();
 			Backbone.history.start();
 
