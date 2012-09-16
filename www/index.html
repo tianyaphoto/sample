@@ -43,35 +43,52 @@
 			<a href="#" data-icon="cancel" class="back ui-btn-right">Logout</a>
         </div>
 
-        <div data-role="content">
-            <ul data-role="listview" data-inset="true">
-                <li>
-					<a href="#createforme" id="create_for_me_link">
-						<img src="./pics/Amy_Jones.jpg" />
-						Create For Me
+        <div data-role="content" id="index-page">
+<div class="ui-grid-b">
+	<div class="ui-block-a">
+			<a href="#createforme" id="create_for_me_link">
+						<img src="./img/create_for_me.jpg" />
+Create For Me
 					</a>
-				</li>
-                <li><a href="#createforother" id="create_for_other_link">
-	<img src="./pics/Amy_Jones.jpg" />
-Create For Other</a></li>
+     </div>
+	<div class="ui-block-b">
+<a href="#createforother" id="create_for_other_link">
+	<img src="./img/create_for_others.jpg" />
+Create For Other</a>
+    </div>
+	<div class="ui-block-c">
+<a href="#received" id="receivedlink">
+	<img src="./img/create_for_me.jpg" />
+Received</a>
+  </div>
+</div>
 
-                <li><a href="#received" id="receivedlink">
-	<img src="./pics/Amy_Jones.jpg" />
-Received</a></li>
 
-                <li><a href="#created" id="created_link">
-	<img src="./pics/Amy_Jones.jpg" />
-Created</a></li>
+<div class="ui-grid-b">
+	<div class="ui-block-a">
+<a href="#created" id="created_link">
+	<img src="./img/create_for_me.jpg" />
+Created</a>
+</div>
+	<div class="ui-block-b"><a href="#updates" id="new_updates_link">
+	<img src="./img/create_for_me.jpg" />
+New Updates</a></div>
+	<div class="ui-block-c"><a href="#system" id="system_link">
+	<img src="./img/create_for_me.jpg" />
+System</a></div>
+</div><!-- /grid-b -->
 
-                <li><a href="#updates" id="new_updates_link">
-	<img src="./pics/Amy_Jones.jpg" />
-New Updates</a></li>
-
-                <li><a href="#system" id="system_link">
-	<img src="./pics/Amy_Jones.jpg" />
-System</a></li>
-
-            </ul>
+      <div class="ui-grid-b">
+	<div class="ui-block-a"><a href="#contact" id="contact_link">
+	<img src="./img/create_for_me.jpg" />
+Contact</a></div>
+	<div class="ui-block-b"><a href="#contact" id="contact_link">
+	<img src="./img/create_for_me.jpg" />
+Contact</a></div>
+	<div class="ui-block-c"><a href="#contact" id="contact_link">
+	<img src="./img/create_for_me.jpg" />
+Contact</a></div>
+</div><!-- /grid-b -->
         </div>
 
     </script>
@@ -179,6 +196,60 @@ System</a></li>
 			</a></li>
 		</ul>
 	</div>
+</div>
+</script>
+
+<script type="text/template" id="contact">
+<div data-role="header" data-theme="b">
+	<a href="#index" data-icon="back" class="back ui-btn-left">Back</a>
+	<h1>Cantact</h1>
+	<a href="#" data-icon="delete" class="back ui-btn-right">Logout</a>
+</div>
+<div data-role="content">
+	<div class="content-primary">
+		<ul data-role="listview">
+<% _.each(contacts, function(user) { %> 
+			<li>
+			<a href="#about_me">  <img src="<%=user.avatar %>" width="58px" height="58px" />
+			<h3><%=user.name %></h3>
+			</a>
+</li>
+
+<% }); %>
+
+
+		</ul>
+	</div>
+</div>
+</script>
+
+<script type="text/template" id="aboutme">
+<div data-role="header" data-theme="b">
+	<h1><%=user.firstname %>-<%=user.lastname %> Profile</h1>
+</div>
+
+<div data-role="content" id="aboutme">
+
+<div class="ui-grid-a">
+	<div class="ui-block-a">
+     <div class="header">
+		<img src="<%=user.face %> "  width="58px" height="58px" />
+      </div>
+    </div>
+	<div class="ui-block-b">
+		<h3><%=user.firstname %>(<%=user.lastname %>) </h3>
+    </div>	
+</div>
+
+<div class="ui-grid-a">
+<div class="ui-block-a">
+Current
+</div>
+<div class="ui-block-b">
+<%= user.current %>
+</div>
+</div>
+
 </div>
 </script>
 

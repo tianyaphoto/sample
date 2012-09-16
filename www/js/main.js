@@ -1,5 +1,20 @@
 var token = null;
 var current_user = null;
+var user = null;
+var contacts = [];
+
+/*
+ *=========
+contacts: "http://app.yeekle.com/?m=contact&a=list&uid=1",p
+login:    "http://app.yeekle.com/?m=login"
+ * */
+var config = {
+	url: {
+		contacts: "http://106.187.95.72:8001/api/contacts.json",
+		login:    "http://106.187.95.72:8001/api/sign_in.json",
+		aboutme:  "http://106.187.95.72:8001/api/users.json"
+	}
+}
 
 $(document).ready(
 		function() {
@@ -59,7 +74,7 @@ $(document).ready(
 					var md5p = hex_md5(password);
 					$.ajax({
 						type : "POST",
-						url : "http://app.yeekle.com/?m=login",
+						url : config.url.login,
 						data : ({
 							username : username,
 							password : md5p
@@ -99,6 +114,28 @@ $(document).ready(
 
 				render : function(eventName) {
 					$(this.el).html(this.template());
+					return this;
+				}
+			});
+			
+			directory.views.ContactView = Backbone.View.extend({
+				template: _.template($("#contact").html()),
+				render : function(eventName) {
+					var result = {
+							contacts: contacts
+					}
+					$(this.el).html(this.template(result));
+					return this;
+				}
+			});
+			
+			directory.views.AboutmeView = Backbone.View.extend({
+				template: _.template($("#aboutme").html()),
+				render : function(eventName) {
+					var result = {
+							user: user
+					}
+					$(this.el).html(this.template(result));
 					return this;
 				}
 			});
@@ -222,7 +259,9 @@ $(document).ready(
 					"received": "received",
 					"created": "created",
 					"updates": "updates",
-					"system": "system"
+					"system": "system",
+					"contact": "contact",
+					"about_me": "aboutme"
 				},
 
 				initialize : function() {
@@ -266,6 +305,23 @@ $(document).ready(
 				
 				system: function(){
 					this.changePage(new directory.views.ReceivedView());
+				},
+				
+				contact: function(){
+					$.get(config.url.contacts, function(data){
+						contacts = data;
+						app.changePage(new directory.views.ContactView());
+					}, "json");
+//					contacts = [{"name":"\u5f20\u4e09","avatar":"http://192.168.1.104:3000/assets/avatar.jpg"},{"name":"\u674e\u56db","avatar":"http://192.168.1.104:3000/assets/avatar.jpg"}]
+//					this.changePage(new directory.views.ContactView());
+					
+				},
+				
+				aboutme: function(){
+					$.get(config.url.aboutme, function(data){
+						user = data;
+						app.changePage(new directory.views.AboutmeView());
+					}, "json");
 				},
 
 				changePage : function(page) {

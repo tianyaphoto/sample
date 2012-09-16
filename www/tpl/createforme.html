@@ -1,0 +1,55 @@
+<div data-role="header" data-theme="b">
+	<a href="#index" data-icon="back" class="back ui-btn-left">Back</a>
+	<h1>Yeekle</h1>
+	<a href="#" data-icon="delete" class="back ui-btn-right">Logout</a>
+</div>
+
+<div data-role="content">
+	<div class="ui-body ui-body-c">
+
+		<div data-role="fieldcontain">
+			<label for="name">Speaker:</label> <input type="text" name="speaker"
+				id="speaker" value="tomzhang0910@hotmail.com"
+				placeholder="Speaker's Email or Phone Number" value="" />
+		</div>
+
+		<div class="ui-grid-b">
+			<div class="ui-block-a">
+				<label for="name">Record:</label>
+			</div>
+			<div class="ui-block-b">
+				<p>Tony Smeth</p>
+				<p>IBM Inc</p>
+				<p>Boston MA</p>
+				<p>Phone #508-314-0885</p>
+			</div>
+			<div class="ui-block-c">
+				<img src="./pics/Ray_Moore.jpg" />
+			</div>
+
+
+		</div>
+	</div>
+
+	<div data-role="fieldcontain" id="audioPosition">
+		<input type="range" name="slider" id="slider" value="0" min="0"
+			max="100" data-highlight="true" disabled />
+	</div>
+
+	<div data-role="controlgroup" data-type="horizontal" data-mini="true">
+		<input type="button" id="play" data-inline="true" data-role="button"
+			data-mini="true" data-icon="audio-play" value="Play" disabled />
+
+		<!--	<input type="button" id="pause" data-inline="true" data-mini="true"  data-role="button"  data-mini="true"  data-icon="audio-pause"    value="Pause" disabled />
+			<input type="button" id="stop" data-inline="true"  data-mini="true"  data-role="button"  data-mini="true"  data-icon="audio-stop"    value="Stop" />
+			<input type="button" id="rewind" data-inline="true" data-mini="true"  data-role="button"   data-mini="true"  data-icon="audio-rewind"   value="Rewind" />
+-->
+		<input type="button" id="record" data-inline="true" data-mini="true"
+			data-role="button" data-mini="true" data-icon="audio-record"
+			value="Record" /> <input type="button" id="submit"
+			data-inline="true" data-role="button" data-mini="true"
+			data-mini="true" data-icon="submit" value="Submit" />
+	</div>
+	<div id="recording"></div>
+
+</div>
