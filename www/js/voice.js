@@ -13,8 +13,6 @@ var recordfilename ;
 
 /* play audio file */
 function playAudio(filepath){
-	//alert(filepath);
-	//filepath = "/mnt/sdcard/test.mp3"
 	audio = new Media(filepath, function(){ // success callback
     	console.log("playAudio():Audio Success");
     }, function(error){ // error callback

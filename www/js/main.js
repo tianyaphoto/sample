@@ -2,17 +2,18 @@ var token = null;
 var current_user = null;
 var user = null;
 var contacts = [];
+var records = [];
 
 /*
- *=========
-contacts: "http://app.yeekle.com/?m=contact&a=list&uid=1",p
-login:    "http://app.yeekle.com/?m=login"
- * */
+ * ========= contacts: "http://app.yeekle.com/?m=contact&a=list&uid=1",p login:
+ * "http://app.yeekle.com/?m=login"
+ */
 var config = {
-	url: {
-		contacts: "http://106.187.95.72:8001/api/contacts.json",
-		login:    "http://106.187.95.72:8001/api/sign_in.json",
-		aboutme:  "http://106.187.95.72:8001/api/users.json"
+	url : {
+		contacts : "http://106.187.95.72:8001/api/contacts.json",
+		login : "http://app.yeekle.com/?m=login", // "http://106.187.95.72:8001/api/sign_in.json",
+		aboutme : "http://106.187.95.72:8001/api/users.json",
+		received: "http://106.187.95.72:8001/api/recieved.json"
 	}
 }
 
@@ -25,32 +26,46 @@ $(document).ready(
 				utils : {},
 				dao : {}
 			};
-			
+
 			directory.models.User = Backbone.Model.extend({
-				defaults: function(){
+				defaults : function() {
 					return {
-						id: 0,
-						email: "test@test.com",
-						lastname: "test",
-						firstname: "test",
-						face: "test.jpg",
-						mobile: null,
+						id : 0,
+						email : "test@test.com",
+						lastname : "test",
+						firstname : "test",
+						face : "test.jpg",
+						mobile : null,
 					};
 				},
-				
-				initialize: function(){
+
+				initialize : function() {
 					console.log("init user data");
 				},
-				
-				
+
 			});
-			
+
 			directory.views.ReceivedView = Backbone.View.extend({
+
+				template : _.template($("#received").html()),
 				
-				template: _.template($("#received").html()),
+				events : {
+					"click a.play": "play"
+				},
 				
-				render: function(){
-					$(this.el).html(this.template());
+				play: function(){
+					var file_src = $(this).attr("href");
+					var file_src = "http://audio.ibeat.org/content/p1rj1s/p1rj1s_-_rockGuitar.mp3";
+					console.log(file_src);
+					playAudio(file_src);
+					return false;
+				},
+
+				render : function() {
+					var result = {
+							records : records
+					}
+					$(this.el).html(this.template(result));
 					return this;
 				}
 			});
@@ -69,6 +84,7 @@ $(document).ready(
 				},
 
 				sign_in : function() {
+					$("#submit-sign-in").button("disable");
 					var username = $("#username").val();
 					var password = $("#password").val();
 					var md5p = hex_md5(password);
@@ -85,12 +101,16 @@ $(document).ready(
 							console.log("login data:  " + data);
 							if (data.result == 0) {
 								console.log(data.log);
+								$("#submit-sign-in").button("enable");
 								showAlert("Invalid Username OR Password.");
+
 							} else {
-								token  = data.tonken;
-								console.log("user data : " + data.user.id + data.user.email );
-								current_user = new directory.models.User(data.user);
-								app.index(); 
+								token = data.tonken;
+								console.log("user data : " + data.user.id
+										+ data.user.email);
+								current_user = new directory.models.User(
+										data.user);
+								app.index();
 							}
 						}
 					});
@@ -107,9 +127,9 @@ $(document).ready(
 				events : {
 					"click #create_for_me_link" : "create_for_me"
 				},
-				
-				create_for_me: function(){
-					
+
+				create_for_me : function() {
+
 				},
 
 				render : function(eventName) {
@@ -117,23 +137,23 @@ $(document).ready(
 					return this;
 				}
 			});
-			
+
 			directory.views.ContactView = Backbone.View.extend({
-				template: _.template($("#contact").html()),
+				template : _.template($("#contact").html()),
 				render : function(eventName) {
 					var result = {
-							contacts: contacts
+						contacts : contacts
 					}
 					$(this.el).html(this.template(result));
 					return this;
 				}
 			});
-			
+
 			directory.views.AboutmeView = Backbone.View.extend({
-				template: _.template($("#aboutme").html()),
+				template : _.template($("#aboutme").html()),
 				render : function(eventName) {
 					var result = {
-							user: user
+						user : user
 					}
 					$(this.el).html(this.template(result));
 					return this;
@@ -205,24 +225,28 @@ $(document).ready(
 						}
 					}, 1000);
 				},
-				
-				submit: function(){
+
+				submit : function() {
 					var win = function(r) {
 						$("#submit").button('disable');
-						app.navigate("index", {trigger: true, replace: true})
+						app.navigate("index", {
+							trigger : true,
+							replace : true
+						})
 					}
 
 					var fail = function(error) {
 						$("#submit").button('disable');
-					    alert("An error has occurred: Code = " + error.code);
+						alert("An error has occurred: Code = " + error.code);
 					}
 
-					//var fileURI = "/mnt/sdcard/test.mp3";
+					// var fileURI = "/mnt/sdcard/test.mp3";
 					var fileURI = src;
 					var options = new FileUploadOptions();
-					options.fileKey="record";
-					options.fileName = fileURI.substr(fileURI.lastIndexOf('/')+1);
-					options.mimeType="audio/mpeg";
+					options.fileKey = "record";
+					options.fileName = fileURI
+							.substr(fileURI.lastIndexOf('/') + 1);
+					options.mimeType = "audio/mpeg";
 
 					var params = new Object();
 					params.uid = 1;
@@ -239,14 +263,20 @@ $(document).ready(
 				},
 
 				render : function(eventName) {
-					console.log("current_user" + JSON.stringify(current_user));
 					$(this.el).html(this.template(current_user.toJSON()));
+					// current_user = {
+					// email: "test@gmail.com",
+					// phone: "123444",
+					// company: "aaaaa",
+					// face: "http://192.168.1.104:3000/assets/avatar.jpg"
+					// }
+					// $(this.el).html(this.template(current_user));
 					return this;
 				}
 			});
-			
+
 			directory.views.CreateForOtherView = Backbone.View.extend({
-				
+
 			});
 
 			var AppRouter = Backbone.Router.extend({
@@ -255,13 +285,13 @@ $(document).ready(
 					"" : "home",
 					"index" : "index",
 					"createforme" : "createforme",
-					"createforother": "createforother",
-					"received": "received",
-					"created": "created",
-					"updates": "updates",
-					"system": "system",
-					"contact": "contact",
-					"about_me": "aboutme"
+					"createforother" : "createforother",
+					"received" : "received",
+					"created" : "created",
+					"updates" : "updates",
+					"system" : "system",
+					"contact" : "contact",
+					"about_me" : "aboutme"
 				},
 
 				initialize : function() {
@@ -275,12 +305,12 @@ $(document).ready(
 				},
 
 				home : function() {
-					if(token === null){
+					if (token === null) {
 						this.changePage(new directory.views.HomeView());
 					} else {
 						this.changePage(new directory.views.IndexView());
 					}
-						
+
 				},
 
 				index : function() {
@@ -290,35 +320,40 @@ $(document).ready(
 				createforme : function() {
 					this.changePage(new directory.views.CreateForMeView());
 				},
-				
-				received: function(){
+
+				received : function() {
+					$.get(config.url.received, function(data) {
+						console.log(data);
+						records = data;
+						app.changePage(new directory.views.ReceivedView());
+					}, "json");
+				},
+
+				created : function() {
 					this.changePage(new directory.views.ReceivedView());
 				},
-				
-				created: function(){
+
+				updates : function() {
 					this.changePage(new directory.views.ReceivedView());
 				},
-				
-				updates: function(){
+
+				system : function() {
 					this.changePage(new directory.views.ReceivedView());
 				},
-				
-				system: function(){
-					this.changePage(new directory.views.ReceivedView());
-				},
-				
-				contact: function(){
-					$.get(config.url.contacts, function(data){
+
+				contact : function() {
+					$.get(config.url.contacts, function(data) {
 						contacts = data;
 						app.changePage(new directory.views.ContactView());
 					}, "json");
-//					contacts = [{"name":"\u5f20\u4e09","avatar":"http://192.168.1.104:3000/assets/avatar.jpg"},{"name":"\u674e\u56db","avatar":"http://192.168.1.104:3000/assets/avatar.jpg"}]
-//					this.changePage(new directory.views.ContactView());
-					
+					// contacts =
+					// [{"name":"\u5f20\u4e09","avatar":"http://192.168.1.104:3000/assets/avatar.jpg"},{"name":"\u674e\u56db","avatar":"http://192.168.1.104:3000/assets/avatar.jpg"}]
+					// this.changePage(new directory.views.ContactView());
+
 				},
-				
-				aboutme: function(){
-					$.get(config.url.aboutme, function(data){
+
+				aboutme : function() {
+					$.get(config.url.aboutme, function(data) {
 						user = data;
 						app.changePage(new directory.views.AboutmeView());
 					}, "json");
@@ -346,10 +381,9 @@ $(document).ready(
 						onFileSytemSuccess, onError);
 			}
 
-			
 			window.app = new AppRouter();
 			Backbone.history.start();
 
 			document.addEventListener('deviceready', onDeviceReady, false);
 
-});
+		});

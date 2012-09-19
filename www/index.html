@@ -94,58 +94,54 @@ Contact</a></div>
     </script>
 
 <script type="text/template" id="create_for_me">
-        <div data-role="header" data-theme="b">
-	<a href="#index" data-icon="back" class="back ui-btn-left">Back</a>
-            <h1>Yeekle</h1>
-			<a href="#" data-icon="delete" class="back ui-btn-right">Logout</a>
-        </div>
 
-        <div data-role="content">
-			<div class="ui-body ui-body-c">
-  
-			<div data-role="fieldcontain">
-	         <label for="name">Speaker:</label>
-	         <input type="text" name="speaker" id="speaker" value="tomzhang0910@hotmail.com" placeholder="Speaker's Email or Phone Number" value=""  />
-			</div>
-
-<div class="ui-grid-b">
-	<div class="ui-block-a">   <label for="name">Record:</label>
-</div>
-	<div class="ui-block-b">	
-         <p><%=	id %></p>
- <p><%=	email %></p>
-  <p><%=company %></p>
-  <p>Phone <%=phone %></p>
-</div>
-	<div class="ui-block-c">
-<img src="./pics/Ray_Moore.jpg" />
+<div data-role="header" data-theme="b">
+	<h1>Yeekle</h1>
 </div>
 
+<div data-role="content">
+	<div class="ui-body ui-body-c">
 
-</div>
-			</div>
-
-		<div data-role="fieldcontain" id="audioPosition">
-			<input type="range" name="slider" id="slider" value="0" min="0" max="100" data-highlight="true" disabled />
+		<div data-role="fieldcontain">
+			<label for="name">Speaker:</label> <input type="text" name="speaker"
+				id="speaker" value="<%=email %>"
+				placeholder="Speaker's Email or Phone Number" value="" />
 		</div>
 
+		<div class="ui-grid-b">
+			<div class="ui-block-a">
+				<label for="name">Record:</label>
+			</div>
+			<div class="ui-block-b">
+				<p>Email: <%= email %></p>
+				<p>Company: <%=company %></p>
+				<p>Phone: <%=phone %></p>
+			</div>
+			<div class="ui-block-c">
+				<img src="<%=face %>" />
+			</div>
+		</div>
+	</div>
+
+	<div data-role="fieldcontain" id="audioPosition">
+		<input type="range" name="slider" id="slider" value="0" min="0"
+			max="100" data-highlight="true" disabled />
+	</div>
+
 	<div data-role="controlgroup" data-type="horizontal" data-mini="true">
-			<input type="button" id="play" data-inline="true"    data-role="button" data-mini="true"  data-icon="audio-play"  value="Play" disabled />
+		<input type="button" id="play" data-inline="true" data-role="button"
+			data-mini="true" data-icon="audio-play" value="Play" disabled /> 
+<input type="button" id="record" data-inline="true" data-mini="true"
+			data-role="button" data-mini="true" data-icon="audio-record"
+			value="Record" /> 
+ <input type="button" id="submit"
+			data-inline="true" data-role="button" data-mini="true"
+			data-mini="true" data-icon="submit" value="Submit" />
+	</div>
+	<div id="recording"></div>
 
-<!--	<input type="button" id="pause" data-inline="true" data-mini="true"  data-role="button"  data-mini="true"  data-icon="audio-pause"    value="Pause" disabled />
-			<input type="button" id="stop" data-inline="true"  data-mini="true"  data-role="button"  data-mini="true"  data-icon="audio-stop"    value="Stop" />
-			<input type="button" id="rewind" data-inline="true" data-mini="true"  data-role="button"   data-mini="true"  data-icon="audio-rewind"   value="Rewind" />
--->
-			<input type="button" id="record" data-inline="true" data-mini="true" data-role="button"  data-mini="true"  data-icon="audio-record"   value="Record" />
-		
-<input type="button" id="submit" data-inline="true" data-role="button" data-mini="true"  data-mini="true"  data-icon="submit" value="Submit" />
-</div>
-		<div id="recording"></div>
-
-</div>
-        </div>
-
-    </script>
+</div>       
+</script>
 
 
 <script type="text/template" id="create_for_other">
@@ -190,10 +186,14 @@ Contact</a></div>
 <div data-role="content">
 	<div class="content-primary">
 		<ul data-role="listview">
-			<li><a href="index.html"> <img src="./pics/default_header.jpg" />
-					<h3>Broken Bells</h3>
-					<p>Broken Bells</p>
-			</a></li>
+
+<% _.each(records, function(record) { %> 
+			<li> <img src="<%=record.avatar %>" width="58px" height="58px" />
+			<h3><%=record.name %></h3>
+<p><h3> <a class="play" href="<%=record.url %>">Play Audio </a> </h3></p>
+
+</li>
+<% }); %>
 		</ul>
 	</div>
 </div>
